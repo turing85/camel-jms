@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  # apache activemq-artemis
+  artemis:
+    image: quay.io/artemiscloud/activemq-artemis-broker:1.0.19
+    container_name: artemis
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+      - "5672:5672"
+    environment:
+      - AMQ_USER=artemis
+      - AMQ_PASSWORD=artemis
+      - AMQ_EXTRA_ARGS=--nio --relax-jolokia
