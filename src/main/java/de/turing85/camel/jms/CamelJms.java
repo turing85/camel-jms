@@ -5,11 +5,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.jms.ConnectionFactory;
 
-import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.main.Main;
 import org.apache.camel.main.MainConfigurationProperties;
+import org.apache.qpid.jms.JmsConnectionFactory;
 
 import static org.apache.camel.builder.endpoint.StaticEndpointBuilders.jms;
 import static org.apache.camel.builder.endpoint.StaticEndpointBuilders.timer;
@@ -40,10 +40,9 @@ public class CamelJms {
   }
 
   private static ConnectionFactory connectionFactory() {
-    return new ActiveMQConnectionFactory(
-        Optional.ofNullable(System.getenv("AMQ_URL")).orElse("tcp://localhost:61616"),
-        Optional.ofNullable(System.getenv("AMQ_USER")).orElse("admin"),
-        Optional.ofNullable(System.getenv("AMQ_PASSWORT")).orElse("admin"));
+    return new JmsConnectionFactory(Optional.ofNullable(System.getenv("AMQ_USER")).orElse("admin"),
+        Optional.ofNullable(System.getenv("AMQ_PASSWORT")).orElse("admin"),
+        Optional.ofNullable(System.getenv("AMQ_URL")).orElse("amqp://localhost:5672"));
   }
 
   private static RouteBuilder senderRoute() {
